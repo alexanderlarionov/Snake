@@ -98,7 +98,7 @@ function changeDirection(event){
             var switchBodypart;
             switchBodypart = snake.head;
             snake.head = snake.tail;
-            snake.tail = switchBodypart; 
+            snake.tail = switchBodypart;
         }
         regularMove = setInterval(function(){moveSnake(direction)}, 50);  
         
@@ -109,7 +109,7 @@ function changeDirection(event){
 function moveSnake(newDirection){
     var currentDirection;
 
-    ctx.clearRect(snake.tail.x, snake.tail.y, snake.tail.edge + 1, snake.tail.edge+ 1);
+    ctx.clearRect(snake.tail.x, snake.tail.y, snake.tail.edge + 1, snake.tail.edge + 1);
     for(var i = 0; i < snake.length; i++){
         if(snake.currentDirection[0] !== newDirection[0] || snake.currentDirection[1] !== newDirection[1]){
             console.log("new Dire!!!");
@@ -129,12 +129,12 @@ function moveSnake(newDirection){
 
     }
     
-  
 
     /*If snake goes through canvasBorders*/
     if(snake.tail.x + snake.tail.edge <= 0 && snake.currentDirection[0] == -1) {
         for(var i = 0; i < snake.length; i++){
-            snake.bodyParts[i].x = mainCanvas.width + i * snake.bodyPartEdge;
+            snake.bodyParts[snake.length - i - 1].x = mainCanvas.width + i * snake.bodyPartEdge;
+            console.log("border bug");
         }
     }
     else if(snake.tail.x >=  mainCanvas.width &&  snake.currentDirection[0] == 1){
