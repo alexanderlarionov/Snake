@@ -2,21 +2,23 @@
 
 window.addEventListener("load", init);
 // document.addEventListener("keypress", keyPressed);
+
 window.onkeyup = function(){
-    changeDirection();
+    handleKeyUp();
 };
 
+//draw canvas and init snake
 function init(){
     window.mainCanvas = document.getElementById("mainCanvas");
     window.ctx = mainCanvas.getContext('2d');
     var initalSpeed = 200;
     initPosX = 300;
     initPosY = 300;
-    initBodyPartEdge = 30;
 
     initSnake();
 }
 
+//SnakeBodyPart class 
 function snakeBodyPart(x,y,edge, id){
 	this.x = x;
 	this.y = y;
@@ -24,8 +26,9 @@ function snakeBodyPart(x,y,edge, id){
 	this.edge = edge;
 }
 
+//Snake class
 function Snake(){
-    this.length = 3;
+    this.length = 5;
     this.bodyPartEdge = 30;
     this.initialDirection = [1,0];
     this.bodyParts = []; 
@@ -33,15 +36,17 @@ function Snake(){
     this.currentDirection = [];
 }
 
+//draw snake with N objects of snakeBodyPart's
 function initSnake(){
     snake = new Snake();
 
     for(var i = 0; i < snake.length; i++){
-        bodyPart = new snakeBodyPart(initPosX  - i * initBodyPartEdge, initPosY, snake.bodyPartEdge, i);
+        bodyPart = new snakeBodyPart(initPosX  - i * snake.bodyPartEdge, initPosY, snake.bodyPartEdge, i);
         snake.bodyParts.push(bodyPart);
     }
     snake.head = snake.bodyParts[0];
     snake.tail = snake.bodyParts[snake.length - 1];
+    snake.currentDirection = snake.initialDirection;
 
     drawSnake();
 
@@ -50,8 +55,8 @@ function initSnake(){
 
 
 
-/*Changes direction on arrow/wasd ke pressed*/
-function changeDirection(event){
+/*Changes direction on arrow/wasd key pressed*/
+function handleKeyUp(event){
     if (!event)
         event = window.event;
     var code = event.keyCode;
@@ -81,16 +86,23 @@ function changeDirection(event){
     }
     event.preventDefault();
 
-    if(snake.currentDirection.length == 0){
-        snake.currentDirection[0] = snake.initialDirection[0];
-        snake.currentDirection[1] = snake.initialDirection[1];
+    //Check to avoid repeated direction-buttons pressed
+    if(typeof direction !== 'undefined' && direction !== null && (direction[0] !== snake.currentDirection[0] || direction[1] !== snake.currentDirection[1]))
+    {
+        changeDirection(direction);
     }
-    var directionChanged = snake.currentDirection[0] !== direction[0] || snake.currentDirection[1] !== direction[1];
 
-    snake.breakPoint = [snake.head.x, snake.head.y];
+}
+function changeDirection (direction) {
+    // body...
+     snake.breakPoint = [snake.head.x, snake.head.y];
     console.log("breakPoint is = ", snake.breakPoint);    
-    if(directionChanged) {
-        clearInterval(initialSnakeMove);
+    // if(directionChanged) {
+        if(typeof initialSnakeMove !== 'typeof')
+        {
+            clearInterval(initialSnakeMove); 
+        }
+        // clearInterval(initialSnakeMove);
         if(typeof regularMove!== 'undefined'){
             clearInterval(regularMove);
         }
@@ -101,25 +113,23 @@ function changeDirection(event){
             snake.tail = switchBodypart;
         }
         regularMove = setInterval(function(){moveSnake(direction)}, 50);  
-        
-    }
 }
 
 /*Main drawing methods*/
-function moveSnake(newDirection){
+function moveSnake(direction){
     var currentDirection;
 
     ctx.clearRect(snake.tail.x, snake.tail.y, snake.tail.edge + 1, snake.tail.edge + 1);
     for(var i = 0; i < snake.length; i++){
-        if(snake.currentDirection[0] !== newDirection[0] || snake.currentDirection[1] !== newDirection[1]){
+        if(snake.currentDirection[0] !== direction[0] || snake.currentDirection[1] !== direction[1]){
             console.log("new Dire!!!");
             if(snake.bodyParts[i].x >= snake.breakPoint.x){
-                snake.bodyParts[i].x += 4 * newDirection[0];
-                snake.bodyParts[i].y += 4 * newDirection[1];
+                snake.bodyParts[i].x += 4 * direction[0];
+                snake.bodyParts[i].y += 4 * direction[1];
             }
             else if(snake.bodyParts[i].y >= snake.breakPoint.y) {
-                snake.bodyParts[i].x += 4 * newDirection[0];
-                snake.bodyParts[i].y += 4 * newDirection[1];
+                snake.bodyParts[i].x += 4 * direction[0];
+                snake.bodyParts[i].y += 4 * direction[1];
             }
         }
         else{
@@ -155,9 +165,9 @@ function moveSnake(newDirection){
         }
     }
 
-    // currentDirection[0] = newDirection[0];
-    // currentDirection[1] = newDirection[1];
-    snake.currentDirection = newDirection;
+    // currentDirection[0] = direction[0];
+    // currentDirection[1] = direction[1];
+    snake.currentDirection = direction;
 
     drawSnake();
 }
