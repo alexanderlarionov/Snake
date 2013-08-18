@@ -43,14 +43,14 @@ function initSnake(){
     for(var i = 0; i < snake.length; i++){
         bodyPart = new snakeBodyPart(initPosX  - i * snake.bodyPartEdge, initPosY, snake.bodyPartEdge, i);
         snake.bodyParts.push(bodyPart);
+        // drawSnakeBodyPart(i);
     }
     snake.head = snake.bodyParts[0];
     snake.tail = snake.bodyParts[snake.length - 1];
     snake.currentDirection = snake.initialDirection;
-
-    // drawSnake();
-
-    initialSnakeMove = setInterval(function(){moveSnake(snake.initialDirection)}, 500);
+    snake.initial = true;
+    // drawSnakeBodyPart();
+    initialSnakeMove = setInterval(function(){moveSnake(snake.initialDirection)}, 1000);
 }
 
 
@@ -112,68 +112,49 @@ function changeDirection (direction) {
             snake.head = snake.tail;
             snake.tail = switchBodypart;
         }
-        regularMove = setInterval(function(){moveSnake(direction)}, 500);  
+        regularMove = setInterval(function(){moveSnake(direction)}, 1000);  
 }
 
 /*Main drawing methods*/
 function moveSnake(direction){
     var currentDirection;
     console.log(direction + " " + snake.currentDirection);
+    
     ctx.clearRect(snake.tail.x, snake.tail.y, snake.tail.edge + 1, snake.tail.edge + 1);
-    for(var i = 0; i < snake.length; i++){
-        if(direction[1] !== 0 && snake.currentDirection[0] !== 0)
-        {
-            if(snake.bodyParts[i].x >= snake.breakPoint[0])
-            {
-                // console.log(i + " new Dir");
-                snake.bodyParts[i].x += 0;
-                snake.bodyParts[i].y += snake.bodyPartEdge * direction[1];
-            }
-            else
-            {
-                // console.log(i + " old Dir");
-                snake.bodyParts[i].x += snake.bodyPartEdge * snake.currentDirection[0];
-                snake.bodyParts[i].y += snake.bodyPartEdge * snake.currentDirection[1];
-            }  
+    snake.head.x += snake.bodyPartEdge * direction[0]; 
+    snake.head.y += snake.bodyPartEdge * direction[1];
+    console.log("head "  + snake.head.x);
+    console.log("tail " + snake.tail.x);
+    console.log("second " + snake.bodyParts[1].x);
+    console.log("third " + snake.bodyParts[2].x);
+    for(var i = 1; i < snake.length; i++){
 
-            if(snake.bodyParts[4].x >= snake.breakPoint[0])
-            {
-                snake.currentDirection = direction;
-        // snake.currentDirection[1] = direction[1];
-            }
-        }
-        else if(direction[0] !== 0 && snake.currentDirection[1] !== 0)
-        {
-            if(snake.bodyParts[i].y <= snake.breakPoint[1])
-            {
-                console.log(i + " new Dir");
-                snake.bodyParts[i].y += 0;
-                snake.bodyParts[i].x += snake.bodyPartEdge * direction[0];
-            }
-            else
-            {
-                console.log(i + " old Dir");
-                snake.bodyParts[i].x += 0;
-                snake.bodyParts[i].y += snake.bodyPartEdge * snake.currentDirection[1];
-            }  
-
-            if(snake.bodyParts[4].y >= snake.breakPoint[1])
-            {
-                snake.currentDirection = direction;
-        // snake.currentDirection[1] = direction[1];
-            }   
-        }
-        else
-        {               
-            snake.bodyParts[i].x += snake.bodyPartEdge * direction[0];
-            snake.bodyParts[i].y += snake.bodyPartEdge * direction[1];
+        // if(snake.initial)
+        // {
+        //     snake.bodyParts[i].x += snake.bodyPartEdge * direction[0];
+        //     snake.bodyParts[i].y += snake.bodyPartEdge * direction[1];  
+        //     if(i == snake.bodyParts.length - 1)
+        //     {
+        //         snake.initial = false;
+        //     } 
+              
+        // }   
+        // else
+        // {
+            // console.log("not initial");
+            snake.bodyParts[i].x = snake.bodyParts[i - 1].x - snake.bodyPartEdge * direction[0];
+            snake.bodyParts[i].y = snake.bodyParts[i - 1].y - snake.bodyPartEdge * direction[1]; 
+        // }
+          
+            // snake.bodyParts[i].x += snake.bodyPartEdge * direction[0];
+            // snake.bodyParts[i].y += snake.bodyPartEdge * direction[1];
             snake.currentDirection = direction;
             
-        }
+        //}
 
-            drawSnakeBodyPart(i);  
+            
     }
-    
+    drawSnakeBodyPart();  
     /*If snake goes through canvasBorders*/
    //  if(snake.tail.x + snake.tail.edge <= 0 && snake.currentDirection[0] == -1) {
    //      for(var i = 0; i < snake.length; i++){
@@ -204,8 +185,8 @@ function moveSnake(direction){
     // drawSnake();
 }
 
-function drawSnakeBodyPart(number){
-    // for(var i = 0; i < snake.length; i++){
+function drawSnakeBodyPart(){
+    for(var number = 0; number < snake.length; number++){
         if(snake.bodyParts[number] == snake.tail){
             ctx.fillStyle = '#00f';
         }
@@ -215,6 +196,7 @@ function drawSnakeBodyPart(number){
         else{
             ctx.fillStyle = '#000';
         }
+        console.log(number);
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
-    // }
+     }
 }   
