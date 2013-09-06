@@ -121,40 +121,18 @@ function moveSnake(direction){
     console.log(direction + " " + snake.currentDirection);
     
     ctx.clearRect(snake.tail.x, snake.tail.y, snake.tail.edge + 1, snake.tail.edge + 1);
-    snake.head.x += snake.bodyPartEdge * direction[0]; 
-    snake.head.y += snake.bodyPartEdge * direction[1];
-    console.log("head "  + snake.head.x);
-    console.log("tail " + snake.tail.x);
-    console.log("second " + snake.bodyParts[1].x);
-    console.log("third " + snake.bodyParts[2].x);
-    for(var i = 1; i < snake.length; i++){
 
-        // if(snake.initial)
-        // {
-        //     snake.bodyParts[i].x += snake.bodyPartEdge * direction[0];
-        //     snake.bodyParts[i].y += snake.bodyPartEdge * direction[1];  
-        //     if(i == snake.bodyParts.length - 1)
-        //     {
-        //         snake.initial = false;
-        //     } 
-              
-        // }   
-        // else
-        // {
-            // console.log("not initial");
-            snake.bodyParts[i].x = snake.bodyParts[i - 1].x - snake.bodyPartEdge * direction[0];
-            snake.bodyParts[i].y = snake.bodyParts[i - 1].y - snake.bodyPartEdge * direction[1]; 
-        // }
-          
-            // snake.bodyParts[i].x += snake.bodyPartEdge * direction[0];
-            // snake.bodyParts[i].y += snake.bodyPartEdge * direction[1];
-            snake.currentDirection = direction;
-            
-        //}
-
-            
+    for(var i = snake.length - 1; i >= 1; i--){
+        snake.bodyParts[i].x = snake.bodyParts[i - 1].x;
+        snake.bodyParts[i].y = snake.bodyParts[i - 1].y;          
     }
-    drawSnakeBodyPart();  
+    snake.head.x += snake.bodyPartEdge * direction[0];
+    snake.head.y += snake.bodyPartEdge * direction[1];
+
+    drawSnakeBodyPart();
+
+    snake.currentDirection = direction;
+    // drawSnakeBodyPart();  
     /*If snake goes through canvasBorders*/
    //  if(snake.tail.x + snake.tail.edge <= 0 && snake.currentDirection[0] == -1) {
    //      for(var i = 0; i < snake.length; i++){
@@ -200,3 +178,4 @@ function drawSnakeBodyPart(){
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
      }
 }   
+  
