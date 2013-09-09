@@ -1,7 +1,7 @@
 /*Adding inital events*/
 
 window.addEventListener("load", init);
-// document.addEventListener("keypress", keyPressed);
+
 
 window.onkeyup = function()
 {
@@ -13,6 +13,16 @@ function init()
 {
     window.mainCanvas = document.getElementById("mainCanvas");
     window.ctx = mainCanvas.getContext('2d');
+
+    if(window.mobilecheck.any()){
+        window.handleMobile();
+    }
+    else{
+        $("#mainCanvasWrapper").width(800);
+        $("#mainCanvasWrapper").height(600);
+        $("#mainCanvas").attr('width', 800);
+        $("#mainCanvas").attr('height', 600);
+    }
     initPosX = 300;
     initPosY = 300;
 
@@ -185,4 +195,21 @@ function drawSnakeBodyPart(){
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
      }
 }   
+
+
+
+function Stone(x, y, edge){
+    this.x = x;
+    this.y = y;
+    this.edge = edge;
+}
+
+function initStones(){
+    setInterval(function(){
+        stone = new Stone()
+    }, 5000);
+}
+
+
+
   
