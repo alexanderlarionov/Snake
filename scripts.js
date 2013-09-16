@@ -80,19 +80,19 @@ function handleKeyUp(event)
 
     switch(code) {
         case 37: case 97:
-            console.log("left");
+            // console.log("left");
             direction = [-1, 0];
             break;
         case 39: case 100:
-            console.log("right");
+            // console.log("right");
             direction = [1, 0];
             break;
         case 38: case 119:
-            console.log("up");
+            // console.log("up");
             direction = [0, -1];
             break;
         case 40: case 115:
-            console.log("down");
+            // console.log("down");
             direction = [0, 1];
             break;
         default:
@@ -111,7 +111,7 @@ function changeDirection (direction)
 {
     snake.breakPoint = [snake.head.x, snake.head.y];
     snake.currentDirection = direction;
-    console.log("breakPoint is = ", snake.breakPoint);    
+    // console.log("breakPoint is = ", snake.breakPoint);    
     // if(directionChanged) {
         if(typeof initialSnakeMove !== 'undefined')
         {
@@ -150,6 +150,19 @@ function moveSnake(direction)
     snake.head.y += snake.bodyPartEdge * direction[1];
 
     drawSnakeBodyPart();
+
+
+    /*Eating stones*/
+    for(var i = 0; i < stonesArray.length; i++){
+        //console.log("stone.x = " + stonesArray[i].x + " and snake.head.x = " + snake.head.x);
+        if(stonesArray[i].x == snake.head.x && stonesArray[i].y == snake.head.y){
+            // snake.length++;
+            // bodyPart = new snakeBodyPart(initPosX  - i * snake.bodyPartEdge, initPosY, snake.bodyPartEdge, i);
+            // snake.bodyParts.push(bodyPart);
+            console.log("snake ate stone withID: " + stonesArray[i].ID);
+            stonesArray.splice(i,1);
+        }
+    }
 
     // drawSnakeBodyPart();  
     /*If snake goes through canvasBorders*/
@@ -207,17 +220,19 @@ function Stone(x, y, edge){
 }
 
 function initStones(){
+    stonesArray = [];
     var IDCounter = 0;
-    setInterval(function(){
+     // setInterval(function(){
         var stoneX = Math.floor((Math.random() * $("#mainCanvasWrapper").width() / snake.bodyPartEdge) + 1);
         var stoneY = Math.floor((Math.random() * $("#mainCanvasWrapper").height()  / snake.bodyPartEdge) + 1);
-        stone = new Stone(stoneX, stoneY, snake.bodyPartEdge);
+        stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
         stone.ID = IDCounter;
         IDCounter++;
-        console.log("stone with ID " + stone.ID + " with coords: " + stone.x + " " + stone.y);
+        //  console.log("stone with ID " + stone.ID + " with coords: " + stone.x + " " + stone.y);
         ctx.fillStyle = "#666";
-        ctx.fillRect(stone.x * stone.edge, stone.y * snake.bodyPartEdge, snake.bodyPartEdge, snake.bodyPartEdge);
-    }, 5000);
+        ctx.fillRect(stone.x, stone.y, snake.bodyPartEdge, snake.bodyPartEdge);
+        stonesArray.push(stone);
+     // }, 5000);
 }
 
 
