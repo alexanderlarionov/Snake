@@ -27,6 +27,7 @@ function init()
     initPosY = 300;
 
     initSnake();
+    initStones();
 }
 
 //SnakeBodyPart class 
@@ -42,7 +43,7 @@ function snakeBodyPart(x,y,edge, id)
 function Snake()
 {
     this.length = 9;
-    this.bodyPartEdge = 30;
+    this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
     this.initialSpeed = 500; // in mili-seconds, frequency of redrawing;
     this.bodyParts = []; 
@@ -201,12 +202,21 @@ function drawSnakeBodyPart(){
 function Stone(x, y, edge){
     this.x = x;
     this.y = y;
-    this.edge = edge;
+    this.edge = snake.bodyPartEdge;
+    this.ID = 0;
 }
 
 function initStones(){
+    var IDCounter = 0;
     setInterval(function(){
-        stone = new Stone()
+        var stoneX = Math.floor((Math.random() * $("#mainCanvasWrapper").width() / snake.bodyPartEdge) + 1);
+        var stoneY = Math.floor((Math.random() * $("#mainCanvasWrapper").height()  / snake.bodyPartEdge) + 1);
+        stone = new Stone(stoneX, stoneY, snake.bodyPartEdge);
+        stone.ID = IDCounter;
+        IDCounter++;
+        console.log("stone with ID " + stone.ID + " with coords: " + stone.x + " " + stone.y);
+        ctx.fillStyle = "#666";
+        ctx.fillRect(stone.x * stone.edge, stone.y * snake.bodyPartEdge, snake.bodyPartEdge, snake.bodyPartEdge);
     }, 5000);
 }
 
