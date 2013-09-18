@@ -18,8 +18,8 @@ function init()
         window.handleMobile();
     }
     else{
-        $("#mainCanvasWrapper").width(800);
-        $("#mainCanvasWrapper").height(600);
+        $("#mainWrapper").width(800);
+        $("#mainWrapper").height(600);
         $("#mainCanvas").attr('width', 800);
         $("#mainCanvas").attr('height', 600);
     }
@@ -45,7 +45,7 @@ function Snake()
     this.length = 9;
     this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
-    this.initialSpeed = 500; // in mili-seconds, frequency of redrawing;
+    this.initialSpeed = 200; // in mili-seconds, frequency of redrawing;
     this.bodyParts = []; 
     this.breakPoint = [];
     this.currentDirection = [];
@@ -149,20 +149,22 @@ function moveSnake(direction)
     snake.head.x += snake.bodyPartEdge * direction[0];
     snake.head.y += snake.bodyPartEdge * direction[1];
 
-    drawSnakeBodyPart();
-
 
     /*Eating stones*/
     for(var i = 0; i < stonesArray.length; i++){
         //console.log("stone.x = " + stonesArray[i].x + " and snake.head.x = " + snake.head.x);
         if(stonesArray[i].x == snake.head.x && stonesArray[i].y == snake.head.y){
-            // snake.length++;
-            // bodyPart = new snakeBodyPart(initPosX  - i * snake.bodyPartEdge, initPosY, snake.bodyPartEdge, i);
-            // snake.bodyParts.push(bodyPart);
+            
+            bodyPart = new snakeBodyPart(snake.tail.x + snake.bodyPartEdge * direction[0], snake.tail.y + snake.bodyPartEdge * direction[1], snake.bodyPartEdge, snake.length - 1);
+            snake.bodyParts.push(bodyPart);
+            snake.tail = bodyPart;
             console.log("snake ate stone withID: " + stonesArray[i].ID);
+            snake.length++;
             stonesArray.splice(i,1);
         }
     }
+
+    drawSnakeBodyPart();
 
     // drawSnakeBodyPart();  
     /*If snake goes through canvasBorders*/
@@ -222,9 +224,9 @@ function Stone(x, y, edge){
 function initStones(){
     stonesArray = [];
     var IDCounter = 0;
-     // setInterval(function(){
-        var stoneX = Math.floor((Math.random() * $("#mainCanvasWrapper").width() / snake.bodyPartEdge) + 1);
-        var stoneY = Math.floor((Math.random() * $("#mainCanvasWrapper").height()  / snake.bodyPartEdge) + 1);
+      setInterval(function(){
+        var stoneX = Math.floor((Math.random() * $("#mainWrapper").width() / snake.bodyPartEdge) + 1);
+        var stoneY = Math.floor((Math.random() * $("#mainWrapper").height()  / snake.bodyPartEdge) + 1);
         stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
         stone.ID = IDCounter;
         IDCounter++;
@@ -232,7 +234,7 @@ function initStones(){
         ctx.fillStyle = "#666";
         ctx.fillRect(stone.x, stone.y, snake.bodyPartEdge, snake.bodyPartEdge);
         stonesArray.push(stone);
-     // }, 5000);
+      }, 10000);
 }
 
 
