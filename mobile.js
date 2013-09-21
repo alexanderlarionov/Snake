@@ -51,9 +51,6 @@ function swipeHandler (touches, direction) {
 
 
 window.handleMobile  = function(){
-	$("#mainWrapper").width(document.width);
-	$("#mainWrapper").height(document.height);
-	$("#mainCanvas").attr('width', document.width);
-	$("#mainCanvas").attr('height', document.height);
+
     jester(window.mainCanvas, {swipeDistanse: 20, preventDefault: true}).swipe(swipeHandler);
 }

@@ -2,7 +2,6 @@
 
 window.addEventListener("load", init);
 
-
 window.onkeyup = function()
 {
     handleKeyUp();
@@ -11,25 +10,41 @@ window.onkeyup = function()
 //draw canvas and init snake
 function init()
 {
+    console.log("INIT");
     window.mainCanvas = document.getElementById("mainCanvas");
+    window.mainWrapper = document.getElementById("mainWrapper");
     window.ctx = mainCanvas.getContext('2d');
+
+    window.mainWrapper.style.width = '800';
+    window.mainWrapper.style.height = '600';
+    $("#mainCanvas").attr('width', $("#mainWrapper").width());
+    $("#mainCanvas").attr('height', $("#mainWrapper").height());
 
     if(window.mobilecheck.any()){
         window.handleMobile();
     }
     else{
-        $("#mainWrapper").width(800);
-        $("#mainWrapper").height(600);
-        $("#mainCanvas").attr('width', 800);
-        $("#mainCanvas").attr('height', 600);
+        $("#mainWrapper").css('margin', "" + ($("body").height() / 2 - $("#mainWrapper").height() / 2) + "px auto 0px auto");
     }
+
+    $("#mainCanvas").hide();
+    $("#startGameWrapper").show();
+    $(".playButton").css('margin', "" + ($("#mainWrapper").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
+    $(".playButton").on('click', function(){
+        console.log("clicked");
+        $("#startGameWrapper").hide();
+        startGame();
+    });
+}
+
+function startGame(){
+    $("#mainCanvas").show();
     initPosX = 300;
     initPosY = 300;
 
     initSnake();
-    initStones();
+    initStones();   
 }
-
 //SnakeBodyPart class 
 function snakeBodyPart(x,y,edge, id)
 {
@@ -122,7 +137,7 @@ function changeDirection (direction)
             clearInterval(regularMove);
         }
 
-        regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
+    regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
 }
 
 
@@ -168,46 +183,38 @@ function moveSnake(direction)
 
     // drawSnakeBodyPart();  
     /*If snake goes through canvasBorders*/
-    if(snake.tail.x + snake.tail.edge <= 0 && snake.currentDirection[0] == -1) {
-        for(var i = 0; i < snake.length; i++){
-            snake.bodyParts[snake.length - i - 1].x = mainCanvas.width + i * snake.bodyPartEdge;
-     
-        }
+    if(snake.head.x < 0 && snake.currentDirection[0] == -1) {
+        alert("WASTED");
+        stopGame();
     }
-    else if(snake.tail.x >=  mainCanvas.width &&  snake.currentDirection[0] == 1){
-        for(var i = 0; i < snake.length; i++){
-            snake.bodyParts[i].x = 0 - i * snake.bodyPartEdge;
-        }
+    else if(snake.head.x >  mainCanvas.width &&  snake.currentDirection[0] == 1){
+        alert("WASTED");
+        stopGame();
     }
 
-   if(snake.tail.y + snake.tail.edge <= 0 && snake.currentDirection[1] == -1) {
-        //mainRect.y =  mainCanvas.height - mainRect.edge;
-        for(var i = 0; i < snake.length; i++){
-            snake.bodyParts[i].y = mainCanvas.height + i * snake.bodyPartEdge;
-        }
+   if(snake.head.y < 0 && snake.currentDirection[1] == -1) {
+        alert("WASTED");
+        stopGame();
     }
-    else if(snake.tail.y >= mainCanvas.height && snake.currentDirection[1] == 1){
-       for(var i = 0; i < snake.length; i++){
-            snake.bodyParts[i].y = 0 - i * snake.bodyPartEdge;
-        }
+    else if(snake.head.y > mainCanvas.height && snake.currentDirection[1] == 1){
+        alert("WASTED");
+        stopGame();
     }
    
-
-
     // drawSnake();
 }
 
 function drawSnakeBodyPart(){
     for(var number = 0; number < snake.length; number++){
-        if(snake.bodyParts[number] == snake.tail){
-            ctx.fillStyle = '#00f';
-        }
-        else if(snake.bodyParts[number] == snake.head){
-            ctx.fillStyle = '#f00';
-        }
-        else{
-            ctx.fillStyle = '#000';
-        }
+        // if(snake.bodyParts[number] == snake.tail){
+        //     ctx.fillStyle = '#00f';
+        // }
+        // else if(snake.bodyParts[number] == snake.head){
+        //     ctx.fillStyle = '#f00';
+        // }
+        // else{
+            ctx.fillStyle = '#634497';
+       // }
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
      }
 }   
@@ -224,7 +231,8 @@ function Stone(x, y, edge){
 function initStones(){
     stonesArray = [];
     var IDCounter = 0;
-      setInterval(function(){
+
+    stoneFabric = setInterval(function(){
         var stoneX = Math.floor((Math.random() * $("#mainWrapper").width() / snake.bodyPartEdge) + 1);
         var stoneY = Math.floor((Math.random() * $("#mainWrapper").height()  / snake.bodyPartEdge) + 1);
         stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
@@ -237,6 +245,22 @@ function initStones(){
       }, 10000);
 }
 
+function stopGame(){
+    if(typeof initialSnakeMove !== 'undefined')
+    {
+        clearInterval(initialSnakeMove); 
+    }
+    // clearInterval(initialSnakeMove);
+    if(typeof regularMove !== 'undefined'){
+        clearInterval(regularMove);
+    }
+    if(typeof stoneFabric !== 'undefined'){
+        console.log("clear stoneFabric");
+        clearInterval(stoneFabric);
+    }
+
+    location.reload();
+}
 
 
   
