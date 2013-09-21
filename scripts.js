@@ -57,7 +57,7 @@ function snakeBodyPart(x,y,edge, id)
 //Snake class
 function Snake()
 {
-    this.length = 9;
+    this.length = 15;
     this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
     this.initialSpeed = 200; // in mili-seconds, frequency of redrawing;
@@ -180,22 +180,51 @@ function moveSnake(direction)
     }
 
     drawSnakeBodyPart();
+    /*If snake bites itself*/
+    for(var i = 0; i < snake.length; i++){
+        //bites from top
+        if(snake.head.x == snake.bodyParts[i].x && snake.head.y + snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == 1){
+            alert("WASTED");
+            stopGame();
+        }
+        //bites from bottom  
+        if(snake.head.x == snake.bodyParts[i].x && snake.head.y - snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == -1){
+            alert("WASTED");
+            stopGame();
+        }
+        //bites from left
+        if(snake.head.x + snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == 1){
+            alert("WASTED");
+            stopGame();
+        }   
+        //bites from right
+        if(snake.head.x - snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == -1){
+            alert("WASTED");
+            stopGame();
+        }     
+    }
 
-    // drawSnakeBodyPart();  
     /*If snake goes through canvasBorders*/
+
+    //left border
     if(snake.head.x < 0 && snake.currentDirection[0] == -1) {
         alert("WASTED");
         stopGame();
     }
+
+    //right border
     else if(snake.head.x >  mainCanvas.width &&  snake.currentDirection[0] == 1){
         alert("WASTED");
         stopGame();
     }
 
+    //top border
    if(snake.head.y < 0 && snake.currentDirection[1] == -1) {
         alert("WASTED");
         stopGame();
     }
+
+    //bottom border
     else if(snake.head.y > mainCanvas.height && snake.currentDirection[1] == 1){
         alert("WASTED");
         stopGame();
