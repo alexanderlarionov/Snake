@@ -60,7 +60,7 @@ function Snake()
     this.length = 15;
     this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
-    this.initialSpeed = 200; // in mili-seconds, frequency of redrawing;
+    this.initialSpeed = 300; // in mili-seconds, frequency of redrawing;
     this.bodyParts = []; 
     this.breakPoint = [];
     this.currentDirection = [];
@@ -116,11 +116,13 @@ function handleKeyUp(event)
     }
     event.preventDefault();
 
+
+    
     if(checkInverseDirection(direction))
     {
         changeDirection(direction);
     }
-
+    disallowChangeDirection = true;
 }
 function changeDirection (direction) 
 {
@@ -128,14 +130,14 @@ function changeDirection (direction)
     snake.currentDirection = direction;
     // console.log("breakPoint is = ", snake.breakPoint);    
     // if(directionChanged) {
-        if(typeof initialSnakeMove !== 'undefined')
-        {
-            clearInterval(initialSnakeMove); 
-        }
-        // clearInterval(initialSnakeMove);
-        if(typeof regularMove!== 'undefined'){
-            clearInterval(regularMove);
-        }
+    if(typeof initialSnakeMove !== 'undefined')
+    {
+        clearInterval(initialSnakeMove); 
+    }
+    // clearInterval(initialSnakeMove);
+    if(typeof regularMove!== 'undefined'){
+        clearInterval(regularMove);
+    }
 
     regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
 }
@@ -146,7 +148,7 @@ function checkInverseDirection(direction)
 {
     var acceptChangeDirection = true;
 
-    acceptChangeDirection = typeof direction !== 'undefined' && direction !== null && (direction[0] !== snake.currentDirection[0] || direction[1] !== snake.currentDirection[1]) && !(direction[0] * (-1) == snake.currentDirection[0] || direction[1] * (-1) == snake.currentDirection[1]); 
+    acceptChangeDirection = typeof direction !== 'undefined' && direction !== null && (direction[0] !== snake.currentDirection[0] || direction[1] !== snake.currentDirection[1]) && !(direction[0] * (-1) == snake.currentDirection[0] || direction[1] * (-1) == snake.currentDirection[1]) && !disallowChangeDirection; 
 
     return acceptChangeDirection;
 }
@@ -234,6 +236,7 @@ function moveSnake(direction)
 }
 
 function drawSnakeBodyPart(){
+    disallowChangeDirection = false;
     for(var number = 0; number < snake.length; number++){
         // if(snake.bodyParts[number] == snake.tail){
         //     ctx.fillStyle = '#00f';
