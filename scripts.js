@@ -12,27 +12,32 @@ function init()
 {
     console.log("INIT");
     window.mainCanvas = document.getElementById("mainCanvas");
-    window.mainWrapper = document.getElementById("mainWrapper");
+    window.centerBlock = document.getElementById("centerBlock");
     window.ctx = mainCanvas.getContext('2d');
 
-    window.mainWrapper.style.width = '800';
-    window.mainWrapper.style.height = '600';
-    $("#mainCanvas").attr('width', $("#mainWrapper").width());
-    $("#mainCanvas").attr('height', $("#mainWrapper").height());
+    window.centerBlock.style.width = '800';
+    window.centerBlock.style.height = '600';
+    $("#mainCanvas").attr('width', $("#centerBlock").width());
+    $("#mainCanvas").attr('height', $("#centerBlock").height());
 
     if(window.mobilecheck.any()){
         window.handleMobile();
     }
     else{
-        $("#mainWrapper").css('margin', "" + ($("body").height() / 2 - $("#mainWrapper").height() / 2) + "px auto 0px auto");
+        // $("#centerBlock").css('margin', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px auto 0px auto");
+        $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
     }
 
     $("#mainCanvas").hide();
     $("#startGameWrapper").show();
-    $(".playButton").css('margin', "" + ($("#mainWrapper").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
+    $(".playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
+
+    playerScoreLabel = $("#leftBlock .score .current .value");
+
     $(".playButton").on('click', function(){
         console.log("clicked");
         $("#startGameWrapper").hide();
+        $("#leftBlock .score").css("visibility", "visible");
         startGame();
     });
 }
@@ -41,9 +46,10 @@ function startGame(){
     $("#mainCanvas").show();
     initPosX = 300;
     initPosY = 300;
-
+    playerScore = 0;
     initSnake();
     initStones();   
+
 }
 //SnakeBodyPart class 
 function snakeBodyPart(x,y,edge, id)
@@ -57,10 +63,10 @@ function snakeBodyPart(x,y,edge, id)
 //Snake class
 function Snake()
 {
-    this.length = 15;
+    this.length = 10;
     this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
-    this.initialSpeed = 300; // in mili-seconds, frequency of redrawing;
+    this.initialSpeed = 500; // in mili-seconds, frequency of redrawing;
     this.bodyParts = []; 
     this.breakPoint = [];
     this.currentDirection = [];
@@ -178,6 +184,10 @@ function moveSnake(direction)
             console.log("snake ate stone withID: " + stonesArray[i].ID);
             snake.length++;
             stonesArray.splice(i,1);
+            snake.initialSpeed -= 10;
+            playerScore +=10;
+            $(playerScoreLabel).text(playerScore);
+            // console.log("snake speed " + snake.initialSpeed);
         }
     }
 
@@ -265,8 +275,8 @@ function initStones(){
     var IDCounter = 0;
 
     stoneFabric = setInterval(function(){
-        var stoneX = Math.floor((Math.random() * $("#mainWrapper").width() / snake.bodyPartEdge) + 1);
-        var stoneY = Math.floor((Math.random() * $("#mainWrapper").height()  / snake.bodyPartEdge) + 1);
+        var stoneX = Math.floor((Math.random() * $("#centerBlock").width() / snake.bodyPartEdge) + 1);
+        var stoneY = Math.floor((Math.random() * $("#centerBlock").height()  / snake.bodyPartEdge) + 1);
         stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
         stone.ID = IDCounter;
         IDCounter++;

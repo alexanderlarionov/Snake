@@ -42,18 +42,37 @@ table {
 	border-spacing: 0;
 }
 
-
-
 html, body{
 	width:100%;
 	height: 100%;
 	overflow: hidden;
 }
-#mainWrapper{
+#leftBlock{
+	display: inline-block;
+	vertical-align: top;
+	width: 25%;
+	height: 100%;
+	/*padding: 20px 0px 0px 20px;*/
+}
+#leftBlock .score{
+	visibility: hidden;
+	margin: 20px 0px 0px 20px;
+}
+#leftBlock .score p{
+	margin-bottom: 5px;
+}
+#leftBlock .score span{
+	font-weight: bold;
+	font-family: 'Myriad Pro';
+	font-size: 24px;
+}
+#centerBlock{
 	margin: 0px auto;
-	border: 1px solid #666;
-	/*display: inline-block;*/
-	margin: 89px auto 0px auto;
+	border: 1px solid #333;
+	display: inline-block;
+	vertical-align: top;
+	width: 50%;
+	/*margin: 89px auto 0px auto;*/
 }
 #mainCanvas {
 	width: 100%;

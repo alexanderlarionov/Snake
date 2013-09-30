@@ -12,12 +12,29 @@
 </head>
 <body>
 	<div id="mainWrapper">
-		<div id="startGameWrapper">
-			<div class="playButton">
-				<span>PLAY</span>
+		<!--Score and additional info-->
+		<div id="leftBlock">
+			<div class="score">
+				<p class="current">
+					<span class="label">Score: </span>
+					<span class="value">0</span>
+				</p>
+				<p class="best">
+					<span class="label">Best: </span>
+					<span class="value">0</span>
+				</p>
 			</div>
 		</div>
-		<canvas id="mainCanvas"></canvas>
+
+		<!--Main block with game field-->
+		<div id="centerBlock">
+			<div id="startGameWrapper">
+				<div class="playButton">
+					<span>PLAY</span>
+				</div>
+			</div>
+			<canvas id="mainCanvas"></canvas>
+		</div>
 	</div>
 </body>
 </html>
