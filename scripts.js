@@ -49,7 +49,10 @@ function startGame(){
     playerScore = 0;
     initSnake();
     initStones();   
-
+    console.log(getCookieWithName("bestScore"));
+    if(getCookieWithName("bestScore")){
+        $("#leftBlock .score .best .value").text(getCookieWithName("bestScore"));
+    }
 }
 //SnakeBodyPart class 
 function snakeBodyPart(x,y,edge, id)
@@ -66,7 +69,7 @@ function Snake()
     this.length = 10;
     this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
-    this.initialSpeed = 500; // in mili-seconds, frequency of redrawing;
+    this.initialSpeed = 300; // in mili-seconds, frequency of redrawing;
     this.bodyParts = []; 
     this.breakPoint = [];
     this.currentDirection = [];
@@ -187,6 +190,7 @@ function moveSnake(direction)
             snake.initialSpeed -= 10;
             playerScore +=10;
             $(playerScoreLabel).text(playerScore);
+            putBestScoreToCookies(playerScore);
             // console.log("snake speed " + snake.initialSpeed);
         }
     }
@@ -284,7 +288,7 @@ function initStones(){
         ctx.fillStyle = "#666";
         ctx.fillRect(stone.x, stone.y, snake.bodyPartEdge, snake.bodyPartEdge);
         stonesArray.push(stone);
-      }, 10000);
+      }, 5000);
 }
 
 function stopGame(){
@@ -300,9 +304,17 @@ function stopGame(){
         console.log("clear stoneFabric");
         clearInterval(stoneFabric);
     }
-
+    putBestScoreToCookies(playerScore);
     location.reload();
 }
 
+function putBestScoreToCookies(score){
+        document.cookie = "bestScore=" + score + ";";
+}
 
+
+function getCookieWithName(name){
+    var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+    return matches ? decodeURIComponent(matches[1]) : null;
+}
   
