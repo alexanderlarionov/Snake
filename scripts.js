@@ -47,9 +47,9 @@ function startGame(){
     initPosX = 300;
     initPosY = 300;
     playerScore = 0;
+    gamePaused = false;
     initSnake();
     initStones();   
-    console.log(getCookieWithName("bestScore"));
     if(getCookieWithName("bestScore")){
         $("#leftBlock .score .best .value").text(getCookieWithName("bestScore"));
     }
@@ -73,6 +73,7 @@ function Snake()
     this.bodyParts = []; 
     this.breakPoint = [];
     this.currentDirection = [];
+    this.regularMove = null;
 }
 
 //draw snake with N objects of snakeBodyPart's
@@ -101,6 +102,7 @@ function handleKeyUp(event)
     var code = event.keyCode;
     if (event.charCode && code == 0)
         code = event.charCode;
+    // console.log(code);
 
     switch(code) {
         case 37: case 97:
@@ -119,6 +121,11 @@ function handleKeyUp(event)
             // console.log("down");
             direction = [0, 1];
             break;
+        case 32: case 13:
+            //on press "Space" or "Enter" game pauses
+            if(typeof gamePaused !== "undefined"){
+                togglePauseGame();
+            }
         default:
             direction = null;
             break;   
@@ -133,6 +140,7 @@ function handleKeyUp(event)
     }
     disallowChangeDirection = true;
 }
+
 function changeDirection (direction) 
 {
     snake.breakPoint = [snake.head.x, snake.head.y];
@@ -144,11 +152,11 @@ function changeDirection (direction)
         clearInterval(initialSnakeMove); 
     }
     // clearInterval(initialSnakeMove);
-    if(typeof regularMove!== 'undefined'){
-        clearInterval(regularMove);
+    if(snake.regularMove !== null){
+        clearInterval(snake.regularMove);
     }
 
-    regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
+    snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
 }
 
 
@@ -191,7 +199,6 @@ function moveSnake(direction)
             playerScore +=10;
             $(playerScoreLabel).text(playerScore);
             putBestScoreToCookies(playerScore);
-            // console.log("snake speed " + snake.initialSpeed);
         }
     }
 
@@ -276,9 +283,12 @@ function Stone(x, y, edge){
 
 function initStones(){
     stonesArray = [];
-    var IDCounter = 0;
+    IDCounter = 0;
+    launchStoneFabric();
+}
 
-    stoneFabric = setInterval(function(){
+function launchStoneFabric(){
+        stoneFabric = setInterval(function(){
         var stoneX = Math.floor((Math.random() * $("#centerBlock").width() / snake.bodyPartEdge) + 1);
         var stoneY = Math.floor((Math.random() * $("#centerBlock").height()  / snake.bodyPartEdge) + 1);
         stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
@@ -297,8 +307,8 @@ function stopGame(){
         clearInterval(initialSnakeMove); 
     }
     // clearInterval(initialSnakeMove);
-    if(typeof regularMove !== 'undefined'){
-        clearInterval(regularMove);
+    if(snake.regularMove !== null){
+        clearInterval(snake.regularMove);
     }
     if(typeof stoneFabric !== 'undefined'){
         console.log("clear stoneFabric");
@@ -316,5 +326,33 @@ function putBestScoreToCookies(score){
 function getCookieWithName(name){
     var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
     return matches ? decodeURIComponent(matches[1]) : null;
+}
+
+function togglePauseGame(){
+    if(!gamePaused){
+        console.log("GAME PAUSED");
+        if(snake.regularMove !== null){
+            console.log("clear regularMove");
+            clearInterval(snake.regularMove);
+        }
+        else if(initialSnakeMove !== null){
+            clearInterval(initialSnakeMove);
+        }
+        if(typeof stoneFabric !== 'undefined'){
+            console.log("clear stoneFabric");
+            clearInterval(stoneFabric);
+        }
+        gamePaused = true;
+        $("#centerBlock").addClass("paused");
+        $("#mainCanvas").animate({opacity: 0.6}, 400);
+    }
+    else{
+        console.log("GAME RESUMED");
+        snake.regularMove = setInterval(function(){moveSnake(snake.currentDirection)}, snake.initialSpeed); 
+        launchStoneFabric();
+        gamePaused = false;
+        $("#centerBlock").removeClass("paused");
+        $("#mainCanvas").animate({opacity: 1.0}, 400);
+    }
 }
   
