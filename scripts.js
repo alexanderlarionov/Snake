@@ -198,7 +198,7 @@ function moveSnake(direction)
             snake.initialSpeed -= 10;
             playerScore +=10;
             $(playerScoreLabel).text(playerScore);
-            putBestScoreToCookies(playerScore);
+            submitHighScoreToCookies(playerScore);
         }
     }
 
@@ -314,12 +314,13 @@ function stopGame(){
         console.log("clear stoneFabric");
         clearInterval(stoneFabric);
     }
-    putBestScoreToCookies(playerScore);
     location.reload();
 }
 
-function putBestScoreToCookies(score){
+function submitHighScoreToCookies(score){
+    if(score > getCookieWithName("bestScore")){
         document.cookie = "bestScore=" + score + ";";
+    }
 }
 
 
