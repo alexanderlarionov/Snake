@@ -30,7 +30,9 @@ function init()
 
     $("#mainCanvas").hide();
     $("#startGameWrapper").show();
+
     $(".playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
+    $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
 
     playerScoreLabel = $("#leftBlock .score .current .value");
 
@@ -207,23 +209,23 @@ function moveSnake(direction)
     for(var i = 0; i < snake.length; i++){
         //bites from top
         if(snake.head.x == snake.bodyParts[i].x && snake.head.y + snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == 1){
-            alert("WASTED");
-            stopGame();
+        showWastedAlert();
+        stopGame();
         }
         //bites from bottom  
         if(snake.head.x == snake.bodyParts[i].x && snake.head.y - snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == -1){
-            alert("WASTED");
-            stopGame();
+        showWastedAlert();
+        stopGame();
         }
         //bites from left
         if(snake.head.x + snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == 1){
-            alert("WASTED");
-            stopGame();
+        showWastedAlert();
+        stopGame();
         }   
         //bites from right
         if(snake.head.x - snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == -1){
-            alert("WASTED");
-            stopGame();
+        showWastedAlert();
+        stopGame();
         }     
     }
 
@@ -231,25 +233,25 @@ function moveSnake(direction)
 
     //left border
     if(snake.head.x < 0 && snake.currentDirection[0] == -1) {
-        alert("WASTED");
+        showWastedAlert();
         stopGame();
     }
 
     //right border
     else if(snake.head.x >  mainCanvas.width &&  snake.currentDirection[0] == 1){
-        alert("WASTED");
+        showWastedAlert();
         stopGame();
     }
 
     //top border
    if(snake.head.y < 0 && snake.currentDirection[1] == -1) {
-        alert("WASTED");
+        showWastedAlert();
         stopGame();
     }
 
     //bottom border
     else if(snake.head.y > mainCanvas.height && snake.currentDirection[1] == 1){
-        alert("WASTED");
+        showWastedAlert();
         stopGame();
     }
    
@@ -273,6 +275,12 @@ function drawSnakeBodyPart(){
 }   
 
 
+function showWastedAlert(){
+    $("#wastedWrapper").css("visibility", "visible");
+    $(document).on("click", function(){
+        location.reload();
+    });
+}
 
 function Stone(x, y, edge){
     this.x = x;
@@ -314,7 +322,7 @@ function stopGame(){
         console.log("clear stoneFabric");
         clearInterval(stoneFabric);
     }
-    location.reload();
+    // location.reload();
 }
 
 function submitHighScoreToCookies(score){
