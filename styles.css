@@ -74,7 +74,7 @@ html, body{
 
 #centerBlock{
 	margin: 0px auto;
-	border: 1px solid #e8e8e8;
+	border: 5px solid #e8e8e8;
 	display: inline-block;
 	vertical-align: top;
 	width: 50%;
@@ -136,7 +136,7 @@ html, body{
 	background: #fff;
 	text-align: center;
 	font-family: 'Myriad Pro';
-	border: 1px solid #e8e8e8;
+	border: 3px solid #e8e8e8;
 	/*margin: 0 auto;*/
 }
 

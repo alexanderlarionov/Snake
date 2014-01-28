@@ -60,45 +60,6 @@ function startGame(){
         $("#leftBlock .score .best .value").text(getCookieWithName("bestScore"));
     }
 }
-// //SnakeBodyPart class 
-// function snakeBodyPart(x,y,edge, id)
-// {
-// 	this.x = x;
-// 	this.y = y;
-//     this.rectId = id;
-// 	this.edge = edge;
-// }
-
-// //Snake class
-// function Snake()
-// {
-//     this.length = 10;
-//     this.bodyPartEdge = 20;
-//     this.initialDirection = [1,0];
-//     this.initialSpeed = 300; // in mili-seconds, frequency of redrawing;
-//     this.bodyParts = []; 
-//     this.breakPoint = [];
-//     this.currentDirection = [];
-//     this.regularMove = null;
-// }
-
-// //draw snake with N objects of snakeBodyPart's
-// function initSnake()
-// {
-//     snake = new Snake();
-
-//     for(var i = 0; i < snake.length; i++){
-//         bodyPart = new snakeBodyPart(initPosX  - i * snake.bodyPartEdge, initPosY, snake.bodyPartEdge, i);
-//         snake.bodyParts.push(bodyPart);
-//     }
-//     snake.head = snake.bodyParts[0];
-//     snake.tail = snake.bodyParts[snake.length - 1];
-//     snake.currentDirection = snake.initialDirection;
-//     snake.initial = true;
-//     initialSnakeMove = setInterval(function(){moveSnake(snake.initialDirection)}, snake.initialSpeed);
-// }
-
-
 
 /*Changes direction on arrow/wasd key pressed*/
 function handleKeyUp(event)
@@ -153,32 +114,6 @@ function showWastedAlert(){
     });
 }
 
-function Stone(x, y, edge){
-    this.x = x;
-    this.y = y;
-    this.edge = snake.bodyPartEdge;
-    this.ID = 0;
-}
-
-function initStones(){
-    stonesArray = [];
-    IDCounter = 0;
-    launchStoneFabric();
-}
-
-function launchStoneFabric(){
-        stoneFabric = setInterval(function(){
-        var stoneX = Math.floor((Math.random() * $("#centerBlock").width() / snake.bodyPartEdge) + 1);
-        var stoneY = Math.floor((Math.random() * $("#centerBlock").height()  / snake.bodyPartEdge) + 1);
-        stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
-        stone.ID = IDCounter;
-        IDCounter++;
-        //  console.log("stone with ID " + stone.ID + " with coords: " + stone.x + " " + stone.y);
-        ctx.fillStyle = "#666";
-        ctx.fillRect(stone.x, stone.y, snake.bodyPartEdge, snake.bodyPartEdge);
-        stonesArray.push(stone);
-      }, 5000);
-}
 
 function stopGame(){
     if(typeof initialSnakeMove !== 'undefined')
