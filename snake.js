@@ -21,9 +21,8 @@ function snakeBodyPart(x,y,edge, id)
 }
 
 //inits snake with N objects of snakeBodyPart's
-function initSnake()
+Snake.prototype.init = function()
 {
-    snake = new Snake();
 
     for(var i = 0; i < snake.length; i++){
         bodyPart = new snakeBodyPart(initPosX  - i * snake.bodyPartEdge, initPosY, snake.bodyPartEdge, i);

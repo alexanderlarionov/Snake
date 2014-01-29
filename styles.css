@@ -55,7 +55,7 @@ html, body{
 #leftBlock{
 	display: inline-block;
 	vertical-align: top;
-	width: 25%;
+	width: 19.7%;
 	height: 100%;
 	/*padding: 20px 0px 0px 20px;*/
 }
@@ -73,11 +73,11 @@ html, body{
 }
 
 #centerBlock{
-	margin: 0px auto;
-	border: 5px solid #e8e8e8;
+	/*margin: 0px auto;*/
 	display: inline-block;
 	vertical-align: top;
-	width: 50%;
+	width: 80%;
+    height: 100%;
 	background: #fff;
 	position: relative;
 	/*margin: 89px auto 0px auto;*/

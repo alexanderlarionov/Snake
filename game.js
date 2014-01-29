@@ -2,12 +2,10 @@
 
 window.addEventListener("load", init);
 
-// window.onkeyup = function()
-// {
-//     handleKeyUp();
-// };
+function Game(){
 
-//draw canvas and init snake
+}
+
 function init()
 {
     console.log("INIT");
@@ -15,17 +13,14 @@ function init()
     window.centerBlock = document.getElementById("centerBlock");
     window.ctx = mainCanvas.getContext('2d');
 
-    window.centerBlock.style.width = '800';
-    window.centerBlock.style.height = '600';
     $("#mainCanvas").attr('width', $("#centerBlock").width());
     $("#mainCanvas").attr('height', $("#centerBlock").height());
-
     if(window.mobilecheck.any()){
         window.handleMobile();
     }
     else{
         // $("#centerBlock").css('margin', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px auto 0px auto");
-        $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
+//        $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
     }
 
     $("#mainCanvas").hide();
@@ -52,13 +47,16 @@ function startGame(){
     $("#mainCanvas").show();
     initPosX = 300;
     initPosY = 300;
+
     playerScore = 0;
     gamePaused = false;
-    initSnake();
+    snake = new Snake();
+    snake.init();
     initStones();   
     if(getCookieWithName("bestScore")){
         $("#leftBlock .score .best .value").text(getCookieWithName("bestScore"));
     }
+    prepareField();
 }
 
 /*Changes direction on arrow/wasd key pressed*/
@@ -170,4 +168,22 @@ function togglePauseGame(){
         $("#mainCanvas").animate({opacity: 1.0}, 400);
     }
 }
-  
+
+function prepareField(){
+    var rectNumHorizontal = Math.ceil($("#mainCanvas").width() / 130);
+    var rectNumVertical = Math.ceil($("#mainCanvas").height() / 130);
+    console.log("width " + $("#mainCanvas").width() + " numHor " + rectNumHorizontal, rectNumVertical);
+}
+
+function drawRoundedRect(canvas, x,y,edge,radius){
+    canvas.save();
+    canvas.beginPath();
+    canvas.lineWidth = 5;
+    canvas.moveTo(x + radius, y);
+    canvas.arcTo(x + edge, y, x + edge, y + radius, radius);
+    canvas.arcTo(x + edge, y + edge, x + edge - radius, y + edge, radius);
+    canvas.arcTo(x, y + edge, x, y + edge - radius, radius);
+    canvas.arcTo(x, y, x + radius, y, radius);
+    canvas.stroke();
+    canvas.restore();
+}
