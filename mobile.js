@@ -21,7 +21,7 @@ window.mobilecheck =  {
 }
 
 
-function swipeHandler (touches, direction) {
+function swipeHandler (direction) {
       switch(direction) {
         case "left":
             console.log("left");
@@ -43,14 +43,27 @@ function swipeHandler (touches, direction) {
             direction = null;
             break;   
     }
-     if(checkInverseDirection(direction))
-    {
+    
+    if (checkInverseDirection(direction)) {
         changeDirection(direction);
     }
 }
 
 
-window.handleMobile  = function(){
-
-    jester(window.mainCanvas, {swipeDistanse: 20, preventDefault: true}).swipe(swipeHandler);
+window.handleMobile = function() {
+    var manager = new Hammer.Manager(document.querySelector('#mainWrapper'));
+    var swipe = new Hammer.Swipe();
+    manager.add(swipe);
+    manager.on('swipe', function(e) {
+        console.log(e);
+        if (e.direction === 8) {
+            swipeHandler("up");
+        } else if (e.direction === 16) {
+            swipeHandler("down");
+        } else if (e.direction === 2) {
+            swipeHandler("left");
+        } else if (e.direction === 4) {
+            swipeHandler("right");
+        }
+    });
 }
