@@ -161,7 +161,7 @@ function drawSnakeBodyPart(){
         //     ctx.fillStyle = '#f00';
         // }
         // else{
-            ctx.fillStyle = '#634497';
+            ctx.fillStyle = '#346CAD';
        // }
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
      }

@@ -15,8 +15,6 @@ function init()
     window.centerBlock = document.getElementById("centerBlock");
     window.ctx = mainCanvas.getContext('2d');
     
-    window.centerBlock.style.width = '800';
-    window.centerBlock.style.height = '600';
     $("#mainCanvas").attr('width', $("#centerBlock").width());
     $("#mainCanvas").attr('height', $("#centerBlock").height());
     
