@@ -7,141 +7,137 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;
+    display: block;
 }
 body {
-	line-height: 1;
+    line-height: 1;
 }
 ol, ul {
-	list-style: none;
+    list-style: none;
 }
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 html, body{
-	width:100%;
-	height: 100%;
-	overflow: hidden;
+    width:100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #mainWrapper{
-	background: #f4f4f4;
+    background: #f4f4f4;
 }
 
-#leftBlock{
-	display: inline-block;
-	vertical-align: top;
-	width: 25%;
-	height: 100%;
-	/*padding: 20px 0px 0px 20px;*/
+#score{
+    position: absolute;
+    visibility: hidden;
+    margin: 20px 0px 0px 20px;
 }
-#leftBlock .score{
-	visibility: hidden;
-	margin: 20px 0px 0px 20px;
+
+#score p {
+    margin-bottom: 5px;
 }
-#leftBlock .score p{
-	margin-bottom: 5px;
-}
-#leftBlock .score span{
-	font-weight: bold;
-	font-family: 'Myriad Pro';
-	font-size: 24px;
+
+#score span{
+    font-weight: bold;
+    font-family: 'Myriad Pro';
+    font-size: 24px;
 }
 
 #centerBlock{
-	margin: 0px auto;
-	border: 5px solid #e8e8e8;
-	display: inline-block;
-	vertical-align: top;
-	width: 50%;
-	background: #fff;
-	position: relative;
-	/*margin: 89px auto 0px auto;*/
+    margin: 0px auto;
+    border: 5px solid #e8e8e8;
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    background: #fff;
+    position: relative;
+    /*margin: 89px auto 0px auto;*/
 }
 
 #centerBlock.paused{
-	background: #fff url("images/pause.png") no-repeat 10 10;
+    background: #fff url("images/pause.png") no-repeat 10 10;
 }
 
 #mainCanvas {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 #startGameWrapper{
-	width: 100%;
-	height: 100%;
-	background: #fff;
-	position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    position: absolute;
 }
 
 .playButton{
-	width: 200px;
-	height: 100px;
-	background: #634497;
-	text-align: center;
-	opacity: 0.9;
-	/*margin: 0 auto;*/
+    width: 200px;
+    height: 100px;
+    background: #634497;
+    text-align: center;
+    opacity: 0.9;
+    /*margin: 0 auto;*/
 }
 
 .playButton:hover{
-	opacity: 1;
-	cursor: pointer;
+    opacity: 1;
+    cursor: pointer;
 }
 
 .playButton span{
-	color: #fff;
-	font-weight: bold;
-	line-height: 110px;
-	font-family: 'Myriad Pro';
-	font-size: 50px;
+    color: #fff;
+    font-weight: bold;
+    line-height: 110px;
+    font-family: 'Myriad Pro';
+    font-size: 50px;
 }
 
 #wastedWrapper{
-	width: 100%;
-	height: 100%;
-	background: url("images/wastedWrapperBg.png") repeat;
-	position: absolute;
-	z-index: 1000;
-	visibility: hidden;	
+    width: 100%;
+    height: 100%;
+    background: url("images/wastedWrapperBg.png") repeat;
+    position: absolute;
+    z-index: 1000;
+    visibility: hidden;
 }
 
 .wastedBlock{
-	width: 240px;
-	height: 120px;
-	background: #fff;
-	text-align: center;
-	font-family: 'Myriad Pro';
-	border: 3px solid #e8e8e8;
-	/*margin: 0 auto;*/
+    width: 240px;
+    height: 120px;
+    background: #fff;
+    text-align: center;
+    font-family: 'Myriad Pro';
+    border: 3px solid #e8e8e8;
+    /*margin: 0 auto;*/
 }
 
 .wastedBlock .wastedLabel{
-	font-weight: bold;
-	font-size: 24px;
-	margin: 20px 0px 20px 0px;
+    font-weight: bold;
+    font-size: 24px;
+    margin: 20px 0px 20px 0px;
 }

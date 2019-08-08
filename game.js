@@ -14,12 +14,12 @@ function init()
     window.mainCanvas = document.getElementById("mainCanvas");
     window.centerBlock = document.getElementById("centerBlock");
     window.ctx = mainCanvas.getContext('2d');
-
+    
     window.centerBlock.style.width = '800';
     window.centerBlock.style.height = '600';
     $("#mainCanvas").attr('width', $("#centerBlock").width());
     $("#mainCanvas").attr('height', $("#centerBlock").height());
-
+    
     if(window.mobilecheck.any()){
         window.handleMobile();
     }
@@ -27,25 +27,25 @@ function init()
         // $("#centerBlock").css('margin', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px auto 0px auto");
         $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
     }
-
+    
     $("#mainCanvas").hide();
     $("#startGameWrapper").show();
-
+    
     $(".playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
     $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
-
-    playerScoreLabel = $("#leftBlock .score .current .value");
-
+    
+    playerScoreLabel = $("#score .current .value");
+    
     $(".playButton").on('click', function(){
-        console.log("clicked");
-        $("#startGameWrapper").hide();
-        $("#leftBlock .score").css("visibility", "visible");
-        startGame();
-    });
-
+                        console.log("clicked");
+                        $("#startGameWrapper").hide();
+                        $("#score").css("visibility", "visible");
+                        startGame();
+                        });
+    
     $(window).on("keyup", function(){
-        handleKeyUp()
-    });
+                 handleKeyUp()
+                 });
 }
 
 function startGame(){
@@ -55,9 +55,9 @@ function startGame(){
     playerScore = 0;
     gamePaused = false;
     initSnake();
-    initStones();   
+    initStones();
     if(getCookieWithName("bestScore")){
-        $("#leftBlock .score .best .value").text(getCookieWithName("bestScore"));
+        $("#score .best .value").text(getCookieWithName("bestScore"));
     }
 }
 
@@ -70,7 +70,7 @@ function handleKeyUp(event)
     if (event.charCode && code == 0)
         code = event.charCode;
     // console.log(code);
-
+    
     switch(code) {
         case 37: case 97:
             // console.log("left");
@@ -95,7 +95,7 @@ function handleKeyUp(event)
             }
         default:
             direction = null;
-            break;   
+            break;
     }
     event.preventDefault();
     
@@ -110,15 +110,15 @@ function handleKeyUp(event)
 function showWastedAlert(){
     $("#wastedWrapper").css("visibility", "visible");
     $(document).on("click", function(){
-        location.reload();
-    });
+                   location.reload();
+                   });
 }
 
 
 function stopGame(){
     if(typeof initialSnakeMove !== 'undefined')
     {
-        clearInterval(initialSnakeMove); 
+        clearInterval(initialSnakeMove);
     }
     // clearInterval(initialSnakeMove);
     if(snake.regularMove !== null){
@@ -163,11 +163,10 @@ function togglePauseGame(){
     }
     else{
         console.log("GAME RESUMED");
-        snake.regularMove = setInterval(function(){moveSnake(snake.currentDirection)}, snake.initialSpeed); 
+        snake.regularMove = setInterval(function(){moveSnake(snake.currentDirection)}, snake.initialSpeed);
         launchStoneFabric();
         gamePaused = false;
         $("#centerBlock").removeClass("paused");
         $("#mainCanvas").animate({opacity: 1.0}, 400);
     }
 }
-  
