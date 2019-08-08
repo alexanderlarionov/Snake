@@ -107,9 +107,9 @@ function handleKeyUp(event)
 
 function showWastedAlert(){
     $("#wastedWrapper").css("visibility", "visible");
-    $(document).on("click", function(){
-                   location.reload();
-                   });
+    $("#wastedWrapper").on("click", function() {
+        location.reload(true);
+    });
 }
 
 
