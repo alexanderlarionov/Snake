@@ -51,7 +51,8 @@ function changeDirection (direction)
     if(snake.regularMove !== null){
         clearInterval(snake.regularMove);
     }
-
+    moveSnake(direction)
+    
     snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
 }
 
