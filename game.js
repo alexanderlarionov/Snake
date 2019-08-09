@@ -29,12 +29,12 @@ function init()
     $("#mainCanvas").hide();
     $("#startGameWrapper").show();
     
-    $(".playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
-    $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $(".playButton").height() / 2) + "px auto 0px auto");
+    $("#playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
+    $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
     
     playerScoreLabel = $("#score .current .value");
     
-    $(".playButton").on('click', function(){
+    $("#playButton").on('click', function(){
                         console.log("clicked");
                         $("#startGameWrapper").hide();
                         $("#score").css("visibility", "visible");
@@ -52,6 +52,7 @@ function startGame(){
     initPosY = 300;
     playerScore = 0;
     gamePaused = false;
+    gameStarted = true;
     initSnake();
     initStones();
     if(getCookieWithName("bestScore")){
@@ -166,5 +167,33 @@ function togglePauseGame(){
         gamePaused = false;
         $("#centerBlock").removeClass("paused");
         $("#mainCanvas").animate({opacity: 1.0}, 400);
+    }
+}
+
+
+function client_callback_pause() {
+    let animatable = document.querySelectorAll(".animatable");
+    
+    animatable.forEach(function(el){
+        if (el.style.WebkitAnimationPlayState != "paused") {
+            el.style.WebkitAnimationPlayState = "paused";
+        }
+    });
+    
+    if (gameStarted === true) {
+        togglePauseGame();
+    }
+}
+
+function client_callback_resume() {
+    let animatable = document.querySelectorAll(".animatable");
+    animatable.forEach(function(el){
+       if (el.style.WebkitAnimationPlayState == "paused") {
+            el.style.WebkitAnimationPlayState = "running";
+       }
+    });
+    
+    if (gameStarted === true) {
+        togglePauseGame();
     }
 }

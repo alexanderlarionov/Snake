@@ -90,7 +90,7 @@ html, body{
     background: #fff;
 }
 
-.playButton{
+#playButton{
     width: 200px;
     height: 100px;
     background: #346CAD;
@@ -98,7 +98,7 @@ html, body{
     border-radius: 50px;
 }
 
-.playButton span{
+#playButton span{
     color: #fff;
     font-weight: bold;
     line-height: 100px;
