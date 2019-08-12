@@ -58,6 +58,7 @@ function startGame(){
     if(getCookieWithName("bestScore")){
         $("#score .best .value").text(getCookieWithName("bestScore"));
     }
+    StartGestures();
 }
 
 /*Changes direction on arrow/wasd key pressed*/
@@ -128,6 +129,7 @@ function stopGame(){
         clearInterval(stoneFabric);
     }
     $(window).unbind("keyup");
+    StopGestures();
 }
 
 function submitHighScoreToCookies(score){
@@ -159,6 +161,7 @@ function togglePauseGame(){
         gamePaused = true;
         $("#centerBlock").addClass("paused");
         $("#mainCanvas").animate({opacity: 0.6}, 400);
+        StopGestures();
     }
     else{
         console.log("GAME RESUMED");
@@ -167,6 +170,7 @@ function togglePauseGame(){
         gamePaused = false;
         $("#centerBlock").removeClass("paused");
         $("#mainCanvas").animate({opacity: 1.0}, 400);
+        StartGestures();
     }
 }
 

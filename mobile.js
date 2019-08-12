@@ -1,3 +1,5 @@
+var gesturesManager;
+
 window.mobilecheck =  {
    Android: function() {
         return navigator.userAgent.match(/Android/i);
@@ -51,10 +53,10 @@ function swipeHandler (direction) {
 
 
 window.handleMobile = function() {
-    var manager = new Hammer.Manager(document.querySelector('#mainWrapper'));
+    gesturesManager = new Hammer.Manager(document.querySelector('#mainWrapper'));
     var swipe = new Hammer.Swipe();
-    manager.add(swipe);
-    manager.on('swipe', function(e) {
+    gesturesManager.add(swipe);
+    gesturesManager.on('swipe', function(e) {
         console.log(e);
         if (e.direction === 8) {
             swipeHandler("up");
@@ -66,4 +68,16 @@ window.handleMobile = function() {
             swipeHandler("right");
         }
     });
+    
+    StopGestures();
 }
+
+function StartGestures() {
+    gesturesManager.set({enable: true});
+}
+
+function StopGestures() {
+    gesturesManager.set({enable: false});
+}
+
+
