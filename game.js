@@ -7,6 +7,8 @@ window.addEventListener("load", init);
 //     handleKeyUp();
 // };
 
+var gameStarted = false;
+
 //draw canvas and init snake
 function init()
 {
