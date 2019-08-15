@@ -2,10 +2,17 @@
 
 window.addEventListener("load", init);
 
-// window.onkeyup = function()
-// {
-//     handleKeyUp();
-// };
+window.onresize = function(event) {
+    layout();
+};
+
+function layout() {
+    $("#mainCanvas").attr('width', $("#centerBlock").width());
+    $("#mainCanvas").attr('height', $("#centerBlock").height());
+    
+    $("#playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
+    $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
+}
 
 var gameStarted = false;
 
@@ -17,22 +24,17 @@ function init()
     window.centerBlock = document.getElementById("centerBlock");
     window.ctx = mainCanvas.getContext('2d');
     
-    $("#mainCanvas").attr('width', $("#centerBlock").width());
-    $("#mainCanvas").attr('height', $("#centerBlock").height());
-    
     if(window.mobilecheck.any()){
         window.handleMobile();
     }
     else{
-        // $("#centerBlock").css('margin', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px auto 0px auto");
         $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
     }
     
+    layout();
+    
     $("#mainCanvas").hide();
     $("#startGameWrapper").show();
-    
-    $("#playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
-    $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
     
     playerScoreLabel = $("#score .current .value");
     
