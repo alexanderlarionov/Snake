@@ -31,6 +31,8 @@ function init()
         $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
     }
     
+    document.querySelector("#startGameWrapper").style.display = "none";
+    
     layout();
     
     $("#mainCanvas").hide();
@@ -204,4 +206,10 @@ function client_callback_resume() {
     if (gameStarted === true) {
         togglePauseGame();
     }
+}
+
+function client_callback_run() {
+    $("#startGameWrapper").hide();
+    $("#score").css("visibility", "visible");
+    startGame();
 }
