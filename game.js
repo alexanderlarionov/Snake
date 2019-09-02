@@ -116,7 +116,12 @@ function handleKeyUp(event)
 function showWastedAlert(){
     $("#wastedWrapper").css("visibility", "visible");
     $("#wastedWrapper").on("click", function() {
-        location.reload(true);
+        clear();
+        init();
+        $("#wastedWrapper").css("visibility", "hidden");
+        $("#startGameWrapper").hide();
+        $("#score").css("visibility", "visible");
+        startGame();
     });
 }
 
