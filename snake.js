@@ -167,3 +167,10 @@ function drawSnakeBodyPart(){
      }
 }   
 
+function clear() {
+    canvas = document.getElementById('mainCanvas');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearInterval(snake.regularMove);
+    clearInterval(initialSnakeMove);
+    clearInterval(drawStone);
+}
