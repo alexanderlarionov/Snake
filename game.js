@@ -114,7 +114,11 @@ function handleKeyUp(event)
 
 
 function showWastedAlert(){
-    window.webkit.messageHandlers.wasted.postMessage("You died");
+    StopGestures();
+    if (window.webkit !== undefined && window.webkit.messageHandlers.wasted != undefined) {
+        window.webkit.messageHandlers.wasted.postMessage("you died");
+    }
+    
     $("#wastedWrapper").css("visibility", "visible");
     $("#wastedWrapper").on("click", function() {
         clear();
