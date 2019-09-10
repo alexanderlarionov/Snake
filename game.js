@@ -202,7 +202,7 @@ function togglePauseGame(){
 }
 
 
-function client_callback_pause() {
+function client_message_pause() {
     let animatable = document.querySelectorAll(".animatable");
     
     animatable.forEach(function(el){
@@ -216,7 +216,7 @@ function client_callback_pause() {
     }
 }
 
-function client_callback_resume() {
+function client_message_resume() {
     let animatable = document.querySelectorAll(".animatable");
     animatable.forEach(function(el){
        if (el.style.WebkitAnimationPlayState == "paused") {
@@ -229,7 +229,7 @@ function client_callback_resume() {
     }
 }
 
-function client_callback_run() {
+function client_message_launch() {
     document.querySelector("#startGameWrapper").display = "none";
     document.querySelector("#score").style.visibility = "visible";
     startGame();
