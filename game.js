@@ -6,14 +6,6 @@ window.onresize = function(event) {
     layout();
 };
 
-function layout() {
-    $("#mainCanvas").attr('width', $("#centerBlock").width());
-    $("#mainCanvas").attr('height', $("#centerBlock").height());
-    
-    $("#playButton").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
-    $(".wastedBlock").css('margin', "" + ($("#centerBlock").height() / 2 - $("#playButton").height() / 2) + "px auto 0px auto");
-}
-
 var gameStarted = false;
 
 //draw canvas and init snake
@@ -24,36 +16,47 @@ function init()
     window.centerBlock = document.getElementById("centerBlock");
     window.ctx = mainCanvas.getContext('2d');
     
-    if(window.mobilecheck.any()){
-        window.handleMobile();
-    }
-    else{
-        $("#centerBlock").css('margin-top', "" + ($("body").height() / 2 - $("#centerBlock").height() / 2) + "px");
+    window.handleMobile();
+    if (!window.mobilecheck.any()) {
+        marginTop = "" + document.querySelector("body").offsetHeight / 2 - document.querySelector("#centerBlock").offsetHeight / 2 + "px";
+        document.querySelector("#centerBlock").style.marginTop = marginTop;
     }
     
-    document.querySelector("#startGameWrapper").style.display = "none";
+    document.querySelector("#mainCanvas").style.visibility = "hidden";
+
     
     layout();
+
+    playerScoreLabel = document.querySelector("#score .current .value");
     
-    $("#mainCanvas").hide();
-    $("#startGameWrapper").show();
+//    document.querySelector("#startGameWrapper").style.display = "none";
     
-    playerScoreLabel = $("#score .current .value");
+    document.querySelector("#playButton").addEventListener("click", function(){
+         console.log("clicked");
+         document.querySelector("#startGameWrapper").style.display = "none";
+         document.querySelector("#score").style.visibility = "visible";
+         startGame();
+    });
     
-    $("#playButton").on('click', function(){
-                        console.log("clicked");
-                        $("#startGameWrapper").hide();
-                        $("#score").css("visibility", "visible");
-                        startGame();
-                        });
+    window.addEventListener("keyup", handleKeyUp);
+}
+
+function layout() {
+    document.querySelector("#mainCanvas").style.width = document.querySelector("#centerBlock").offsetWidth;
+    document.querySelector("#mainCanvas").style.height = document.querySelector("#centerBlock").offsetHeight;
     
-    $(window).on("keyup", function(){
-                 handleKeyUp()
-                 });
+    
+    document.querySelector("#mainCanvas").width = document.querySelector("#centerBlock").offsetWidth;
+    document.querySelector("#mainCanvas").height = document.querySelector("#centerBlock").offsetHeight;
+    
+    margin = "" + (document.querySelector("#centerBlock").offsetHeight / 2 - document.querySelector("#playButton").offsetHeight / 2) + "px auto 0px auto";
+    
+    document.querySelector("#playButton").style.margin = margin;
+    document.querySelector(".wastedBlock").style.margin = margin;
 }
 
 function startGame(){
-    $("#mainCanvas").show();
+    document.querySelector("#mainCanvas").style.visibility = "visible";
     initPosX = 300;
     initPosY = 300;
     playerScore = 0;
@@ -62,7 +65,7 @@ function startGame(){
     initSnake();
     initStones();
     if(getCookieWithName("bestScore")){
-        $("#score .best .value").text(getCookieWithName("bestScore"));
+        document.querySelector("#score .best .value").text(getCookieWithName("bestScore"));
     }
     StartGestures();
 }
@@ -115,21 +118,20 @@ function handleKeyUp(event)
 
 function showWastedAlert(){
     StopGestures();
-    if (window.webkit !== undefined && window.webkit.messageHandlers.wasted != undefined) {
-        window.webkit.messageHandlers.wasted.postMessage("you died");
+    document.querySelector("#wastedWrapper").style.visibility = "visible";
+    
+    if (window.webkit !== undefined && window.webkit.messageHandlers.inAppActions != undefined) {
+        window.webkit.messageHandlers.inAppActions.postMessage({"action_name":"wasted"});
     }
     
-    $("#wastedWrapper").css("visibility", "visible");
-    $("#wastedWrapper").on("click", function() {
+    document.querySelector("#wastedWrapper").addEventListener("click", function() {
         clear();
         init();
-        $("#wastedWrapper").css("visibility", "hidden");
-        $("#startGameWrapper").hide();
-        $("#score").css("visibility", "visible");
+        document.querySelector("#wastedWrapper").style.visibility = "hidden";
+        document.querySelector("#score").style.visibility = "visible";
         startGame();
     });
 }
-
 
 function stopGame(){
     if(typeof initialSnakeMove !== 'undefined')
@@ -144,13 +146,22 @@ function stopGame(){
         console.log("clear stoneFabric");
         clearInterval(stoneFabric);
     }
-    $(window).unbind("keyup");
+    
+    if (moveSnake != undefined) {
+        clearInterval(moveSnake);
+    }
+    
+    window.removeEventListener("keyup", handleKeyUp);
     StopGestures();
 }
 
 function submitHighScoreToCookies(score){
     if(score > getCookieWithName("bestScore")){
         document.cookie = "bestScore=" + score + ";";
+    }
+    
+    if (score === 100 && window.webkit !== undefined && window.webkit.messageHandlers.inAppActions != undefined) {
+        window.webkit.messageHandlers.inAppActions.postMessage({"action_name":"hit100"});
     }
 }
 
@@ -175,8 +186,8 @@ function togglePauseGame(){
             clearInterval(stoneFabric);
         }
         gamePaused = true;
-        $("#centerBlock").addClass("paused");
-        $("#mainCanvas").animate({opacity: 0.6}, 400);
+        document.querySelector("#centerBlock").addClass("paused");
+        document.querySelector("#mainCanvas").animate({opacity: 0.6}, 400);
         StopGestures();
     }
     else{
@@ -184,8 +195,8 @@ function togglePauseGame(){
         snake.regularMove = setInterval(function(){moveSnake(snake.currentDirection)}, snake.initialSpeed);
         launchStoneFabric();
         gamePaused = false;
-        $("#centerBlock").removeClass("paused");
-        $("#mainCanvas").animate({opacity: 1.0}, 400);
+        document.querySelector("#centerBlock").removeClass("paused");
+        document.querySelector("#mainCanvas").animate({opacity: 1.0}, 400);
         StartGestures();
     }
 }
@@ -219,7 +230,7 @@ function client_callback_resume() {
 }
 
 function client_callback_run() {
-    $("#startGameWrapper").hide();
-    $("#score").css("visibility", "visible");
+    document.querySelector("#startGameWrapper").display = "none";
+    document.querySelector("#score").style.visibility = "visible";
     startGame();
 }
