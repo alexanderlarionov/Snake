@@ -16,8 +16,8 @@ function launchStoneFabric(){
 }
 
 function drawStone(){
-    var stoneX = Math.floor((Math.random() * $("#centerBlock").width() / snake.bodyPartEdge) + 1);
-    var stoneY = Math.floor((Math.random() * $("#centerBlock").height()  / snake.bodyPartEdge) + 1);
+    var stoneX = Math.floor((Math.random() * document.querySelector("#centerBlock").offsetWidth / snake.bodyPartEdge) + 1);
+    var stoneY = Math.floor((Math.random() * document.querySelector("#centerBlock").offsetHeight  / snake.bodyPartEdge) + 1);
     stone = new Stone(stoneX * snake.bodyPartEdge, stoneY * snake.bodyPartEdge, snake.bodyPartEdge);
     stone.ID = IDCounter;
     IDCounter++;
