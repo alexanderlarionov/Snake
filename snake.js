@@ -48,9 +48,14 @@ function changeDirection (direction)
         clearInterval(initialSnakeMove); 
     }
     // clearInterval(initialSnakeMove);
-    if(snake.regularMove !== null){
+    if(snake.regularMove !== null) {
         clearInterval(snake.regularMove);
     }
+    
+    if (moveSnake != undefined) {
+        clearInterval(moveSnake);
+    }
+    
     moveSnake(direction)
     
     snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
@@ -132,7 +137,7 @@ function moveSnake(direction)
     }
 
     //right border
-    else if(snake.head.x >  mainCanvas.width &&  snake.currentDirection[0] == 1){
+    else if(snake.head.x >  mainCanvas.offsetWidth &&  snake.currentDirection[0] == 1){
         showWastedAlert();
         stopGame();
     }
@@ -144,7 +149,7 @@ function moveSnake(direction)
     }
 
     //bottom border
-    else if(snake.head.y > mainCanvas.height && snake.currentDirection[1] == 1){
+    else if(snake.head.y > mainCanvas.offsetHeight && snake.currentDirection[1] == 1){
         showWastedAlert();
         stopGame();
     }
@@ -168,3 +173,10 @@ function drawSnakeBodyPart(){
      }
 }   
 
+function clear() {
+    canvas = document.getElementById('mainCanvas');
+    ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+    clearInterval(snake.regularMove);
+    clearInterval(initialSnakeMove);
+    clearInterval(drawStone);
+}
