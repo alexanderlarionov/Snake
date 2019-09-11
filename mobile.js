@@ -17,28 +17,22 @@ window.mobilecheck =  {
         return navigator.userAgent.match(/IEMobile/i);
     },
     any: function() {
-
         return (window.mobilecheck.Android() || window.mobilecheck.BlackBerry() || window.mobilecheck.iOS() || window.mobilecheck.Opera() || window.mobilecheck.Windows());
     }
 }
 
-
 function swipeHandler (direction) {
       switch(direction) {
         case "left":
-            console.log("left");
             direction = [-1, 0];
             break;
         case "right":
-            console.log("right");
             direction = [1, 0];
             break;
         case "up":
-            console.log("up");
             direction = [0, -1];
             break;
         case "down":
-            console.log("down");
             direction = [0, 1];
             break;
         default:
@@ -51,13 +45,11 @@ function swipeHandler (direction) {
     }
 }
 
-
 window.handleMobile = function() {
     gesturesManager = new Hammer.Manager(document.querySelector('#mainWrapper'));
     var swipe = new Hammer.Swipe();
     gesturesManager.add(swipe);
     gesturesManager.on('swipe', function(e) {
-        console.log(e);
         if (e.direction === 8) {
             swipeHandler("up");
         } else if (e.direction === 16) {
@@ -79,5 +71,3 @@ function StartGestures() {
 function StopGestures() {
     gesturesManager.set({enable: false});
 }
-
-
