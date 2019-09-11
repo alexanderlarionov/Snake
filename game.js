@@ -17,7 +17,9 @@ function init()
     window.ctx = mainCanvas.getContext('2d');
     
     window.handleMobile();
-    if (!window.mobilecheck.any()) {
+    if (window.mobilecheck.any()) {
+        document.querySelector("#startGameWrapper").style.display = "none";
+    } else {
         marginTop = "" + document.querySelector("body").offsetHeight / 2 - document.querySelector("#centerBlock").offsetHeight / 2 + "px";
         document.querySelector("#centerBlock").style.marginTop = marginTop;
     }
@@ -28,8 +30,6 @@ function init()
     layout();
 
     playerScoreLabel = document.querySelector("#score .current .value");
-    
-//    document.querySelector("#startGameWrapper").style.display = "none";
     
     document.querySelector("#playButton").addEventListener("click", function(){
          console.log("clicked");
@@ -134,23 +134,17 @@ function showWastedAlert(){
 }
 
 function stopGame(){
-    if(typeof initialSnakeMove !== 'undefined')
-    {
+    if(typeof initialSnakeMove !== "undefined") {
         clearInterval(initialSnakeMove);
     }
-    // clearInterval(initialSnakeMove);
-    if(snake.regularMove !== null){
+    if(typeof snake.regularMove !== "undefined") {
         clearInterval(snake.regularMove);
     }
-    if(typeof stoneFabric !== 'undefined'){
+    if(typeof stoneFabric != "undefined") {
         console.log("clear stoneFabric");
         clearInterval(stoneFabric);
     }
-    
-    if (moveSnake != undefined) {
-        clearInterval(moveSnake);
-    }
-    
+
     window.removeEventListener("keyup", handleKeyUp);
     StopGestures();
 }
@@ -192,6 +186,9 @@ function togglePauseGame(){
     }
     else{
         console.log("GAME RESUMED");
+        if (typeof snake.regularMove != "undefined") {
+            clearInterval(snake.regularMove);
+        }
         snake.regularMove = setInterval(function(){moveSnake(snake.currentDirection)}, snake.initialSpeed);
         launchStoneFabric();
         gamePaused = false;
