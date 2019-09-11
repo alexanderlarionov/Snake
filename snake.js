@@ -36,25 +36,24 @@ function initSnake() {
 function changeDirection (direction) {
     snake.breakPoint = [snake.head.x, snake.head.y];
     snake.currentDirection = direction;
-    // console.log("breakPoint is = ", snake.breakPoint);
-    // if(directionChanged) {
-    if(typeof initialSnakeMove !== 'undefined')
-    {
-        clearInterval(initialSnakeMove);
+
+    var moved = moveSnake(direction);
+
+    if (moved) {
+        if(typeof initialSnakeMove !== 'undefined') {
+            clearInterval(initialSnakeMove);
+        }
+        // clearInterval(initialSnakeMove);
+        if(snake.regularMove !== null) {
+            clearInterval(snake.regularMove);
+        }
+
+        if (moveSnake != undefined) {
+            clearInterval(moveSnake);
+        }
+
+        snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);
     }
-    // clearInterval(initialSnakeMove);
-    if(snake.regularMove !== null) {
-        clearInterval(snake.regularMove);
-    }
-
-    if (moveSnake != undefined) {
-        clearInterval(moveSnake);
-    }
-
-    moveSnake(direction)
-
-
-    snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);
 }
 
 //Disallow movement in inverse and repeated direction
@@ -107,6 +106,7 @@ function moveSnake(direction) {
         if (bitesFromTop || bitesFromBottom || bitesFromLeft || bitesFromRight) {
           showWastedAlert();
           stopGame();
+          return false;
         }
     }
 
@@ -121,7 +121,10 @@ function moveSnake(direction) {
     if (hitLeftBorder || hitRightBorder || hitTopBorder || hitBottomBorder) {
       showWastedAlert();
       stopGame();
+      return false;
     }
+
+    return true;
 }
 
 function drawSnakeBodyPart(){
@@ -138,7 +141,7 @@ function drawSnakeBodyPart(){
        // }
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
      }
-}
+}   
 
 function clear() {
     canvas = document.getElementById('mainCanvas');
