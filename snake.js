@@ -1,19 +1,17 @@
 //Snake class
-function Snake()
-{
+function Snake() {
     this.length = 10;
     this.bodyPartEdge = 20;
     this.initialDirection = [1,0];
     this.initialSpeed = 300; // in mili-seconds, frequency of redrawing;
-    this.bodyParts = []; 
+    this.bodyParts = [];
     this.breakPoint = [];
     this.currentDirection = [];
     this.regularMove = null;
 }
 
-//SnakeBodyPart class 
-function snakeBodyPart(x,y,edge, id)
-{
+//SnakeBodyPart class
+function snakeBodyPart(x,y,edge, id) {
 	this.x = x;
 	this.y = y;
     this.rectId = id;
@@ -21,8 +19,7 @@ function snakeBodyPart(x,y,edge, id)
 }
 
 //inits snake with N objects of snakeBodyPart's
-function initSnake()
-{
+function initSnake() {
     snake = new Snake();
 
     for(var i = 0; i < snake.length; i++){
@@ -36,60 +33,56 @@ function initSnake()
     initialSnakeMove = setInterval(function(){moveSnake(snake.initialDirection)}, snake.initialSpeed);
 }
 
-
-function changeDirection (direction) 
-{
+function changeDirection (direction) {
     snake.breakPoint = [snake.head.x, snake.head.y];
     snake.currentDirection = direction;
-    // console.log("breakPoint is = ", snake.breakPoint);    
+    // console.log("breakPoint is = ", snake.breakPoint);
     // if(directionChanged) {
     if(typeof initialSnakeMove !== 'undefined')
     {
-        clearInterval(initialSnakeMove); 
+        clearInterval(initialSnakeMove);
     }
     // clearInterval(initialSnakeMove);
     if(snake.regularMove !== null) {
         clearInterval(snake.regularMove);
     }
-    
+
     if (moveSnake != undefined) {
         clearInterval(moveSnake);
     }
-    
+
     moveSnake(direction)
-    
-    snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);  
+
+
+    snake.regularMove = setInterval(function(){moveSnake(direction)}, snake.initialSpeed);
 }
 
 //Disallow movement in inverse and repeated direction
-function checkInverseDirection(direction)
-{
+function checkInverseDirection(direction) {
     var acceptChangeDirection = true;
 
-    acceptChangeDirection = typeof direction !== 'undefined' && direction !== null && (direction[0] !== snake.currentDirection[0] || direction[1] !== snake.currentDirection[1]) && !(direction[0] * (-1) == snake.currentDirection[0] || direction[1] * (-1) == snake.currentDirection[1]) && !disallowChangeDirection; 
+    acceptChangeDirection = typeof direction !== 'undefined' && direction !== null && (direction[0] !== snake.currentDirection[0] || direction[1] !== snake.currentDirection[1]) && !(direction[0] * (-1) == snake.currentDirection[0] || direction[1] * (-1) == snake.currentDirection[1]) && !disallowChangeDirection;
 
     return acceptChangeDirection;
 }
 
 /*Main drawing methods*/
-function moveSnake(direction)
-{
-    var currentDirection;    
+function moveSnake(direction) {
+    var currentDirection;
     ctx.clearRect(snake.tail.x, snake.tail.y, snake.tail.edge + 1, snake.tail.edge + 1);
 
     for(var i = snake.length - 1; i >= 1; i--){
         snake.bodyParts[i].x = snake.bodyParts[i - 1].x;
-        snake.bodyParts[i].y = snake.bodyParts[i - 1].y;          
+        snake.bodyParts[i].y = snake.bodyParts[i - 1].y;
     }
     snake.head.x += snake.bodyPartEdge * direction[0];
     snake.head.y += snake.bodyPartEdge * direction[1];
-
 
     /*Eating stones*/
     for(var i = 0; i < stonesArray.length; i++){
         //console.log("stone.x = " + stonesArray[i].x + " and snake.head.x = " + snake.head.x);
         if(stonesArray[i].x == snake.head.x && stonesArray[i].y == snake.head.y){
-            
+
             bodyPart = new snakeBodyPart(snake.tail.x + snake.bodyPartEdge * direction[0], snake.tail.y + snake.bodyPartEdge * direction[1], snake.bodyPartEdge, snake.length - 1);
             snake.bodyParts.push(bodyPart);
             snake.tail = bodyPart;
@@ -106,55 +99,29 @@ function moveSnake(direction)
     drawSnakeBodyPart();
     /*If snake bites itself*/
     for(var i = 0; i < snake.length; i++){
-        //bites from top
-        if(snake.head.x == snake.bodyParts[i].x && snake.head.y + snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == 1){    
-        showWastedAlert();
-        stopGame();
+        let bitesFromTop = snake.head.x == snake.bodyParts[i].x && snake.head.y + snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == 1;
+        let bitesFromBottom = snake.head.x == snake.bodyParts[i].x && snake.head.y - snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == -1;
+        let bitesFromLeft = snake.head.x + snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == 1;
+        let bitesFromRight = snake.head.x - snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == -1;
+
+        if (bitesFromTop || bitesFromBottom || bitesFromLeft || bitesFromRight) {
+          showWastedAlert();
+          stopGame();
         }
-        //bites from bottom  
-        if(snake.head.x == snake.bodyParts[i].x && snake.head.y - snake.bodyPartEdge == snake.bodyParts[i].y && snake.currentDirection[1] == -1){
-        showWastedAlert();
-        stopGame();
-        }
-        //bites from left
-        if(snake.head.x + snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == 1){
-        showWastedAlert();
-        stopGame();
-        }   
-        //bites from right
-        if(snake.head.x - snake.bodyPartEdge == snake.bodyParts[i].x && snake.head.y == snake.bodyParts[i].y && snake.currentDirection[0] == -1){
-        showWastedAlert();
-        stopGame();
-        }     
     }
 
     /*If snake goes through canvasBorders*/
 
     //left border
-    if(snake.head.x < 0 && snake.currentDirection[0] == -1) {
-        showWastedAlert();
-        stopGame();
-    }
+    let hitLeftBorder = snake.head.x < 0 && snake.currentDirection[0] == -1;
+    let hitRightBorder = snake.head.x >  mainCanvas.offsetWidth &&  snake.currentDirection[0] == 1;
+    let hitTopBorder = snake.head.y < 0 && snake.currentDirection[1] == -1;
+    let hitBottomBorder = snake.head.y > mainCanvas.offsetHeight && snake.currentDirection[1] == 1;
 
-    //right border
-    else if(snake.head.x >  mainCanvas.offsetWidth &&  snake.currentDirection[0] == 1){
-        showWastedAlert();
-        stopGame();
+    if (hitLeftBorder || hitRightBorder || hitTopBorder || hitBottomBorder) {
+      showWastedAlert();
+      stopGame();
     }
-
-    //top border
-   if(snake.head.y < 0 && snake.currentDirection[1] == -1) {
-        showWastedAlert();
-        stopGame();
-    }
-
-    //bottom border
-    else if(snake.head.y > mainCanvas.offsetHeight && snake.currentDirection[1] == 1){
-        showWastedAlert();
-        stopGame();
-    }
-   
-    // drawSnake();
 }
 
 function drawSnakeBodyPart(){
@@ -171,7 +138,7 @@ function drawSnakeBodyPart(){
        // }
         ctx.fillRect(snake.bodyParts[number].x,snake.bodyParts[number].y,snake.bodyParts[number].edge, snake.bodyParts[number].edge);
      }
-}   
+}
 
 function clear() {
     canvas = document.getElementById('mainCanvas');
